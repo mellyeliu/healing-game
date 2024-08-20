@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import DesktopIcon from "./Components/DesktopIcon";
 import "./App.css";
+import ChatApp from "./Components/Chat";
+import Draggable from "react-draggable"; // The default
 
 function App() {
   const appStyle = {
@@ -61,6 +63,7 @@ function App() {
             onClick={(e) => handleIconClick(icon.id, e)}
           />
         ))}
+        <ChatApp />
       </div>
     </div>
   );
