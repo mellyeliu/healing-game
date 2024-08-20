@@ -8,6 +8,14 @@
   pointer-events: none;
 }
 
+:root {
+  --bg-color: rgb(49, 49, 49);
+  --text-color: black;
+  --accent-color: rgb(240, 160, 232);
+  --accent-color-2: rgb(255, 125, 203);
+  --chat-border: 2px solid #ffffff;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

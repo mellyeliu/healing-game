@@ -2,28 +2,58 @@ import React, { useState, useEffect } from "react";
 import DesktopIcon from "./Components/DesktopIcon";
 import "./App.css";
 import ChatApp from "./Components/Chat";
-import Draggable from "react-draggable"; // The default
+import Files from "./Components/Files";
 
 function App() {
+  const [openItems, setOpenItems] = useState(new Set());
+  const [activeIcon, setActiveIcon] = useState(null);
+
   const appStyle = {
     height: "100vh",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#111",
+    overflow: "hidden",
   };
 
   const contentStyle = {
     width: "75%",
     height: "70%",
     minHeight: "600px",
+    position: "relative",
     minWidth: "900px",
     maxHeight: "800px",
     maxWidth: "1000px",
-    backgroundColor: "#d0bad4",
-    backgroundSize: "cover",
+    background: "url(/backgrounds/bg8.png)",
+    // backgroundColor: "#d0bad4",
+    backgroundSize: "contain",
     border: "1px solid white",
     backgroundPosition: "center",
+    overflow: "hidden",
+  };
+
+  const windowStyle = {
+    position: "absolute",
+    top: "0%",
+    left: "0%",
+    pointerEvents: "none",
+  };
+
+  const handleDoubleClick = (id) => {
+    setOpenItems((prevOpenItems) => {
+      const updatedOpenItems = new Set(prevOpenItems);
+      updatedOpenItems.add(id);
+      return updatedOpenItems;
+    });
+  };
+
+  const handleXClick = (id) => {
+    setOpenItems((prevOpenItems) => {
+      const updatedOpenItems = new Set(prevOpenItems);
+      updatedOpenItems.delete(id);
+      return updatedOpenItems;
+    });
   };
 
   const handleIconClick = (id, event) => {
@@ -35,10 +65,8 @@ function App() {
     setActiveIcon(null);
   };
 
-  const [activeIcon, setActiveIcon] = useState(null);
-
   const icons = [
-    { id: 1, image: "/icons/file.png", caption: "File" },
+    { id: 1, image: "/icons/file.png", caption: "Files" },
     { id: 2, image: "/icons/messages.png", caption: "Messages" },
     { id: 3, image: "/icons/music.png", caption: "Music" },
   ];
@@ -61,9 +89,15 @@ function App() {
             caption={icon.caption}
             isActive={activeIcon === icon.id}
             onClick={(e) => handleIconClick(icon.id, e)}
+            onDoubleClick={() => handleDoubleClick(icon.id)}
           />
         ))}
-        <ChatApp />
+        <div style={windowStyle}>
+          {openItems.has(1) && <Files close={handleXClick} id={1} />}
+        </div>
+        <div style={windowStyle}>
+          {openItems.has(2) && <ChatApp close={handleXClick} id={2} />}
+        </div>
       </div>
     </div>
   );

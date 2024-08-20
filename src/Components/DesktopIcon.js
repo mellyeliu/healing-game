@@ -1,6 +1,6 @@
 import React from "react";
 
-function DesktopIcon({ image, caption, isActive, onClick }) {
+function DesktopIcon({ image, caption, isActive, onClick, onDoubleClick, id }) {
   const iconStyle = {
     width: "100px",
     height: "100px",
@@ -24,14 +24,20 @@ function DesktopIcon({ image, caption, isActive, onClick }) {
   const captionStyle = {
     display: "inline-block",
     textAlign: "center",
-    backgroundColor: isActive ? "blue" : "transparent",
-    color: isActive ? "white" : "black",
+    backgroundColor: isActive ? "var(--accent-color)" : "transparent",
+    color: isActive ? "black" : "white",
     padding: "0px 2px",
     fontFamily: "Pixelify Sans",
   };
 
   return (
-    <div style={iconStyle} onClick={onClick}>
+    <div
+      style={iconStyle}
+      onClick={onClick}
+      onDoubleClick={() => {
+        onDoubleClick(id);
+      }}
+    >
       <img src={image} alt={caption} style={imageStyle} />
       <div style={captionStyle}>{caption}</div>
     </div>

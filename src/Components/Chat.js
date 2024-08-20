@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Draggable from "react-draggable";
 import "../App.css";
 
-function ChatApp() {
+function ChatApp({ close }) {
   const [activeTab, setActiveTab] = useState("chat1");
   const [currentStep, setCurrentStep] = useState(0);
   const [messages, setMessages] = useState({
@@ -106,23 +106,28 @@ function ChatApp() {
   };
 
   // Styles
-  const chatAppStyles = {
+  const styles = {
+    container: {
+      // outline: "1px solid white" /* Outer border */,
+      // outlineOffset: 0,
+      width: "600px",
+      pointerEvents: "auto",
+    },
     draggable: {
-      defaultPosition: { x: 30, y: 30 },
+      defaultPosition: { x: 350, y: 150 },
       style: {
         display: "flex",
         height: "400px",
         width: "600px",
-        background: "white",
-        border: "1px solid #222",
-        borderRadius: "10px",
+        background: "var(--bg-color)",
+        border: "var(--chat-border)",
         overflow: "hidden",
         fontFamily: "Pixelify Sans",
       },
     },
     tabContainer: {
       width: "100px",
-      backgroundColor: "#f0f0f0",
+      backgroundColor: "var(--bg-color)",
       display: "flex",
       flexDirection: "column",
       font: "Pixelify Sans",
@@ -130,15 +135,16 @@ function ChatApp() {
     tab: (isActive) => ({
       padding: "10px",
       cursor: "pointer",
-      borderBottom: "1px solid #222",
-      backgroundColor: isActive ? "#ccc" : "transparent",
+      color: "white",
+      borderBottom: "var(--chat-border)",
+      backgroundColor: isActive ? "#aaa " : "transparent",
     }),
     messageContainer: {
       flexGrow: 1,
       display: "flex",
       flexDirection: "column",
       fontFamily: "Pixelify Sans",
-      borderLeft: "1px solid #222",
+      borderLeft: "var(--chat-border)",
     },
     messageList: {
       flexGrow: 1,
@@ -151,23 +157,61 @@ function ChatApp() {
       borderRadius: "10px",
       maxWidth: "70%",
       alignSelf: from === "me" ? "flex-end" : "flex-start",
-      backgroundColor: from === "me" ? "pink" : "#fff",
-      border: "1px solid #222",
+      backgroundColor: from === "me" ? "var(--accent-color)" : "#fff",
+      border: "var(--chat-border)",
     }),
     responseContainer: {
       padding: "10px",
-      borderTop: "1px solid #222",
-      backgroundColor: "#f9f9f9",
+      borderTop: "var(--chat-border)",
+      backgroundColor: "var(--bg-color)",
     },
     responseButton: {
       padding: "10px",
       margin: "5px",
-      borderRadius: "5px",
+      borderRadius: "10px",
       cursor: "pointer",
-      backgroundColor: "pink",
+      backgroundColor: "var(--accent-color)",
       fontFamily: "Pixelify Sans",
       color: "black",
-      border: "1px solid #222",
+      border: "var(--chat-border)",
+    },
+    header: {
+      width: "590px",
+      backgroundColor: "white",
+      borderTop: "var(--chat-border)",
+      borderLeft: "var(--chat-border)",
+      borderRight: "var(--chat-border)",
+      padding: "3px 5px",
+      // background: "var(--accent-color)",
+      background: "var(--accent-color)",
+      height: "20px",
+      verticalAlign: "center",
+      color: "black",
+      fontFamily: "Pixelify Sans",
+    },
+    header2: {
+      width: "calc(100% - 10px)",
+      height: "100%",
+      padding: "0px 5px",
+      // background: "var(--accent-color)",
+      backgroundImage:
+        "linear-gradient(to right, var(--accent-color), var(--accent-color-2))" /* pastel var(--accent-color) to pastel blue */,
+      margin: "0px",
+      border: "var(--chat-border)",
+    },
+    browser: {
+      // border: "1px solid black",
+      height: 14,
+      verticalAlign: "center",
+      marginLeft: 5,
+      color: "black",
+      width: 14,
+      marginTop: 3,
+      display: "inline",
+      lineHeight: "10px",
+      cursor: "pointer",
+      float: "right",
+      // background: "white",
     },
   };
 
@@ -175,51 +219,68 @@ function ChatApp() {
     <Draggable
       axis="both"
       handle=".handle"
-      defaultPosition={chatAppStyles.draggable.defaultPosition}
+      defaultPosition={styles.draggable.defaultPosition}
       position={null}
       scale={1}
     >
-      <div style={chatAppStyles.draggable.style} className="handle">
-        <div style={chatAppStyles.tabContainer}>
+      <div style={styles.container} className="handle">
+        <div style={styles.header}>
+          {/* <div style={styles.header2}> */}
+          Messages{" "}
           <div
-            style={chatAppStyles.tab(activeTab === "chat1")}
-            onClick={() => handleTabClick("chat1")}
+            onClick={() => {
+              close(2);
+            }}
+            style={styles.browser}
           >
-            Rainbow
+            <span>x</span>
           </div>
-          <div
-            style={chatAppStyles.tab(activeTab === "chat2")}
-            onClick={() => handleTabClick("chat2")}
-          >
-            Cloud
-          </div>
+          {/* <div style={styles.browser}>o</div>
+          <div style={styles.browser}>_</div> */}
+          {/* </div> */}
         </div>
-        <div style={chatAppStyles.messageContainer}>
-          <div style={chatAppStyles.messageList}>
-            {messages[activeTab].map((msg, index) => (
-              <div key={index} style={chatAppStyles.message(msg.from)}>
-                {msg.text}
-              </div>
-            ))}
+        <div style={styles.draggable.style}>
+          <div style={styles.tabContainer}>
+            <div
+              style={styles.tab(activeTab === "chat1")}
+              onClick={() => handleTabClick("chat1")}
+            >
+              Rainbow
+            </div>
+            <div
+              style={styles.tab(activeTab === "chat2")}
+              onClick={() => handleTabClick("chat2")}
+            >
+              Cloud
+            </div>
           </div>
-          <div style={chatAppStyles.responseContainer}>
-            {conversationMap[activeTab][currentStep].responses.length > 0 ? (
-              <div>
-                {conversationMap[activeTab][currentStep].responses.map(
-                  (response, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleResponseClick(response)}
-                      style={chatAppStyles.responseButton}
-                    >
-                      {response.text}
-                    </button>
-                  )
-                )}
-              </div>
-            ) : (
-              <div>No more responses available.</div>
-            )}
+          <div style={styles.messageContainer}>
+            <div style={styles.messageList}>
+              {messages[activeTab].map((msg, index) => (
+                <div key={index} style={styles.message(msg.from)}>
+                  {msg.text}
+                </div>
+              ))}
+            </div>
+            <div style={styles.responseContainer}>
+              {conversationMap[activeTab][currentStep].responses.length > 0 ? (
+                <div>
+                  {conversationMap[activeTab][currentStep].responses.map(
+                    (response, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleResponseClick(response)}
+                        style={styles.responseButton}
+                      >
+                        {response.text}
+                      </button>
+                    )
+                  )}
+                </div>
+              ) : (
+                <div>No more responses available.</div>
+              )}
+            </div>
           </div>
         </div>
       </div>
