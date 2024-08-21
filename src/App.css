@@ -13,7 +13,7 @@
   --text-color: black;
   --accent-color: rgb(240, 160, 232);
   --accent-color-2: rgb(255, 125, 203);
-  --chat-border: 2px solid #ffffff;
+  --chat-border: 1px solid #ffffff;
 }
 
 @media (prefers-reduced-motion: no-preference) {

@@ -28,7 +28,7 @@ function App() {
     background: "url(/backgrounds/bg8.png)",
     // backgroundColor: "#d0bad4",
     backgroundSize: "contain",
-    border: "1px solid white",
+    border: "var(--chat-border)",
     backgroundPosition: "center",
     overflow: "hidden",
   };

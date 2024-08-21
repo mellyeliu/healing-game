@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Draggable from "react-draggable";
 import "../App.css";
 
@@ -6,7 +6,7 @@ function ChatApp({ close }) {
   const [activeTab, setActiveTab] = useState("chat1");
   const [currentStep, setCurrentStep] = useState(0);
   const [messages, setMessages] = useState({
-    chat1: [{ text: "Hello! How are you?", from: "them" }],
+    chat1: [{ text: "u showed up in my dream again...", from: "them" }],
     chat2: [{ text: "Hi! Do you like coding?", from: "them" }],
   });
 
@@ -14,66 +14,78 @@ function ChatApp({ close }) {
     chat1: [
       {
         from: "them",
-        text: "Hello! How are you?",
+        text: "u showed up in my dream again...",
+        responses: [{ text: "what were we doing?", nextStep: 1 }],
+      },
+      {
+        from: "them",
+        text: "all i remember is we were laying in a field, looking at the sky.",
         responses: [
-          { text: "I'm good, thanks!", nextStep: 1 },
-          { text: "Not so well...", nextStep: 2 },
+          { text: "did i show u my favourite constellation?", nextStep: 2 },
         ],
       },
       {
         from: "them",
-        text: "Great to hear! What are you up to?",
+        text: "no. you started crying and i didnt know what to do :((",
+        responses: [{ text: "oh....", nextStep: 3 }],
+      },
+      {
+        from: "them",
+        text: "that reminds me, i got something for u (sends rings)",
         responses: [
-          { text: "Just working.", nextStep: 3 },
-          { text: "Relaxing at home.", nextStep: 3 },
+          {
+            text: "omg!! they're beautiful!! where did u get those from?",
+            nextStep: 4,
+          },
         ],
       },
       {
         from: "them",
-        text: "I'm sorry to hear that. Anything I can do to help?",
+        text: "from the lady in the dream-market. i was telling her about u. she says if you give them to someone you love, you'll be able to dream together.",
         responses: [
-          { text: "Just need some rest.", nextStep: 3 },
-          { text: "Maybe a chat?", nextStep: 3 },
+          { text: "should we give them a try next time?", nextStep: 5 },
         ],
       },
       {
         from: "them",
-        text: "Got it. Take care!",
+        text: "i'd love to <3",
+        responses: [
+          { text: "okk, im gonna go to sleep now. see u soon!!", nextStep: 6 },
+        ],
+      },
+      {
+        from: "them",
+        text: "<3 i'll be waiting for you",
         responses: [],
       },
     ],
     chat2: [
       {
         from: "them",
-        text: "Hi! Do you like coding?",
+        text: "i wish i could go back and throw stars in the sky for u. just to see u smile.",
         responses: [
-          { text: "Yes, I love it!", nextStep: 1 },
-          { text: "It's okay.", nextStep: 2 },
+          {
+            text: "remember when we used to fold stars together?",
+            nextStep: 1,
+          },
         ],
       },
       {
         from: "them",
-        text: "That's awesome! What do you enjoy most?",
-        responses: [
-          { text: "Building projects.", nextStep: 3 },
-          { text: "Solving problems.", nextStep: 3 },
-        ],
-      },
-      {
-        from: "them",
-        text: "Gotcha. Everyone has their preferences.",
-        responses: [
-          { text: "True.", nextStep: 3 },
-          { text: "Absolutely.", nextStep: 3 },
-        ],
-      },
-      {
-        from: "them",
-        text: "Keep it up!",
+        text: "how could i forget.. i still have the jar of stars you gave me.",
         responses: [],
       },
     ],
   };
+
+  const scrollRef = useRef(null);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      // Scroll to bottom whenever messages change
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   const handleTabClick = (tabId) => {
     setActiveTab(tabId);
@@ -102,14 +114,12 @@ function ChatApp({ close }) {
           },
         ],
       });
-    }, 500);
+    }, 1000);
   };
 
   // Styles
   const styles = {
     container: {
-      // outline: "1px solid white" /* Outer border */,
-      // outlineOffset: 0,
       width: "600px",
       pointerEvents: "auto",
     },
@@ -255,7 +265,7 @@ function ChatApp({ close }) {
             </div>
           </div>
           <div style={styles.messageContainer}>
-            <div style={styles.messageList}>
+            <div ref={scrollRef} style={styles.messageList}>
               {messages[activeTab].map((msg, index) => (
                 <div key={index} style={styles.message(msg.from)}>
                   {msg.text}
