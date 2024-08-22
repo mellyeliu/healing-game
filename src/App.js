@@ -3,6 +3,7 @@ import DesktopIcon from "./Components/DesktopIcon";
 import "./App.css";
 import ChatApp from "./Components/Chat";
 import Files from "./Components/Files";
+import Music from "./Components/Music";
 
 function App() {
   const [openItems, setOpenItems] = useState(new Set());
@@ -97,6 +98,9 @@ function App() {
         </div>
         <div style={windowStyle}>
           {openItems.has(2) && <ChatApp close={handleXClick} id={2} />}
+        </div>
+        <div style={windowStyle}>
+          {openItems.has(3) && <Music close={handleXClick} id={3} />}
         </div>
       </div>
     </div>

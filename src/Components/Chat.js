@@ -166,7 +166,7 @@ function ChatApp({ close }) {
       padding: "10px",
       borderRadius: "10px",
       maxWidth: "70%",
-      alignSelf: from === "me" ? "flex-end" : "flex-start",
+      marginLeft: from === "me" ? "auto" : "5px",
       backgroundColor: from === "me" ? "var(--accent-color)" : "#fff",
       border: "var(--chat-border)",
     }),
