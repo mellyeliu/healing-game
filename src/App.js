@@ -4,10 +4,19 @@ import "./App.css";
 import ChatApp from "./Components/Chat";
 import Files from "./Components/Files";
 import Music from "./Components/Music";
+import Scene from "./Components/Scene";
 
 function App() {
   const [openItems, setOpenItems] = useState(new Set());
   const [activeIcon, setActiveIcon] = useState(null);
+
+  const handleGameBack = () => {
+    setOpenItems((prev) => {
+      const updatedSet = new Set(prev);
+      updatedSet.delete(4); // Remove the value '4'
+      return updatedSet; // Return the updated set
+    });
+  };
 
   const appStyle = {
     height: "100vh",
@@ -70,6 +79,7 @@ function App() {
     { id: 1, image: "/icons/file.png", caption: "Files" },
     { id: 2, image: "/icons/messages.png", caption: "Messages" },
     { id: 3, image: "/icons/music.png", caption: "Music" },
+    { id: 4, image: "/icons/game.png", caption: "Game" },
   ];
 
   useEffect(() => {
@@ -83,25 +93,30 @@ function App() {
   return (
     <div style={appStyle}>
       <div style={contentStyle}>
-        {icons.map((icon) => (
-          <DesktopIcon
-            key={icon.id}
-            image={icon.image}
-            caption={icon.caption}
-            isActive={activeIcon === icon.id}
-            onClick={(e) => handleIconClick(icon.id, e)}
-            onDoubleClick={() => handleDoubleClick(icon.id)}
-          />
-        ))}
-        <div style={windowStyle}>
-          {openItems.has(1) && <Files close={handleXClick} id={1} />}
-        </div>
-        <div style={windowStyle}>
-          {openItems.has(2) && <ChatApp close={handleXClick} id={2} />}
-        </div>
-        <div style={windowStyle}>
-          {openItems.has(3) && <Music close={handleXClick} id={3} />}
-        </div>
+        {openItems.has(4) && <Scene onBack={handleGameBack} />}
+        {!openItems.has(4) && (
+          <>
+            {icons.map((icon) => (
+              <DesktopIcon
+                key={icon.id}
+                image={icon.image}
+                caption={icon.caption}
+                isActive={activeIcon === icon.id}
+                onClick={(e) => handleIconClick(icon.id, e)}
+                onDoubleClick={() => handleDoubleClick(icon.id)}
+              />
+            ))}
+            <div style={windowStyle}>
+              {openItems.has(1) && <Files close={handleXClick} id={1} />}
+            </div>
+            <div style={windowStyle}>
+              {openItems.has(2) && <ChatApp close={handleXClick} id={2} />}
+            </div>
+            <div style={windowStyle}>
+              {openItems.has(3) && <Music close={handleXClick} id={3} />}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
